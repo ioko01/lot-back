@@ -23,23 +23,50 @@ export class ApiLotto {
                 if (authorize) {
                     if (authorize !== 401) {
                         const data = req.params as { id: string }
-                        const attr_lottos = "CONVERT_TZ(NOW(),'+00:00','+07:00') AS now, lottos.lotto_id AS l_id, lottos.name AS l_name, img_flag, open, close, `report`, `lottos`.`status` AS l_status , date_type, date_open, thai_open_date, api, groups, `lottos`.`promotion` AS promotion, thai_this_times, thai_next_times, lottos.modify_commission As modify_commission, "
-                        const attr_rates = "rates_template.name AS rt_name, rates_template.one_digits AS rt_one_digits, rates_template.two_digits AS rt_two_digits, rates_template.three_digits AS rt_three_digits, rates_template.bet_one_digits AS rt_bet_one_digits, rates_template.bet_two_digits AS rt_bet_two_digits, rates_template.bet_three_digits AS rt_bet_three_digits, "
-                        const attr_commissions = "commissions.one_digits AS c_one_digits, commissions.two_digits AS c_two_digits, commissions.three_digits AS c_three_digits, "
-                        const attr_digits_close = "percent, digits_close.one_digits AS dc_one_digits, digits_close.two_digits AS dc_two_digits, digits_close.three_digits AS dc_three_digits"
-                        const attr = attr_lottos + attr_rates + attr_commissions + attr_digits_close
-                        const joins = [
-                            ["lottos", "lottos.lotto_id", "=", "rates.lotto_id"],
-                            ["rates_template", "rates_template.rate_template_id", "=", "rates.rate_template_id"],
-                            ["commissions", "rates.commission_id", "=", "commissions.commission_id"],
-                            ["digits_close", "rates.digit_close_id", "=", "digits_close.digit_close_id"],
-                        ]
-                        const where = [
-                            ["rates.lotto_id", "=", data.id]
-                        ]
-                        const [lotto] = await Helpers.select_database_left_join_where(["rates"], attr, joins, where) as ILottoMySQL[]
-                        if (!lotto) return res.status(202).json({ message: "don't have lotto" })
-                        return res.json(lotto)
+                        const sql = `
+                        SELECT
+                            CONVERT_TZ(NOW(),'+00:00','+07:00') AS now, 
+                            lottos.lotto_id AS l_id, 
+                            lottos.name AS l_name, 
+                            img_flag, 
+                            open, 
+                            close, 
+                            report, 
+                            lottos.status AS l_status , 
+                            date_type, 
+                            date_open, 
+                            thai_open_date, 
+                            api, 
+                            groups, 
+                            lottos.promotion AS promotion, 
+                            thai_this_times, 
+                            thai_next_times, 
+                            lottos.modify_commission As modify_commission, 
+                            rates_template.name AS rt_name, 
+                            rates_template.one_digits AS rt_one_digits, 
+                            rates_template.two_digits AS rt_two_digits, 
+                            rates_template.three_digits AS rt_three_digits, 
+                            rates_template.bet_one_digits AS rt_bet_one_digits, 
+                            rates_template.bet_two_digits AS rt_bet_two_digits, 
+                            rates_template.bet_three_digits AS rt_bet_three_digits, 
+                            commissions.one_digits AS c_one_digits, 
+                            commissions.two_digits AS c_two_digits, 
+                            commissions.three_digits AS c_three_digits, 
+                            percent, 
+                            digits_close.one_digits AS dc_one_digits, 
+                            digits_close.two_digits AS dc_two_digits, 
+                            digits_close.three_digits AS dc_three_digits
+                        FROM ??
+                            LEFT JOIN lottos ON lottos.lotto_id = rates.lotto_id
+                            LEFT JOIN rates_template ON rates_template.rate_template_id = rates.rate_template_id
+                            LEFT JOIN commissions ON rates.commission_id = commissions.commission_id
+                            LEFT JOIN digits_close ON rates.digit_close_id = digits_close.digit_close_id
+                        WHERE rates.lotto_id = ?
+                        `;
+                        connection.query(sql, ["rates", data.id], async (err, result, field) => {
+                            if (err) return res.status(202).json(err);
+                            return res.json(JSON.parse(JSON.stringify(result)))
+                        });
                     } else {
                         return res.sendStatus(authorize)
                     }
@@ -94,6 +121,7 @@ export class ApiLotto {
                             if (err) return res.status(202).json(err);
                             return res.json(JSON.parse(JSON.stringify(result)))
                         });
+
                     } else {
                         return res.sendStatus(authorize)
                     }
@@ -123,6 +151,7 @@ export class ApiLotto {
                             if (err) return res.status(202).json(err);
                             return res.json(JSON.parse(JSON.stringify(result)))
                         });
+
                     } else {
                         return res.sendStatus(authorize)
                     }

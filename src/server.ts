@@ -128,12 +128,12 @@ RateTemplate.addRateTemplate('/add/rate_template', authenticate, ["ADMIN", "AGEN
 RateTemplate.updateRate('/update/rate_template', authenticate, ["ADMIN", "AGENT"])
 RateTemplate.deleteRate('/delete/rate_template', authenticate, ["ADMIN", "AGENT"])
 
-DigitSemi.getDigitSemiIdAndStoreId('/get/digitsemi/:id/:store/:start/:end', authenticate, ["ADMIN", "AGENT", "MANAGER", "MEMBER"])
-DigitSemi.getDigitSemiMe('/get/digitsemi', authenticate, ["ADMIN", "AGENT", "MANAGER", "MEMBER"])// ดูเลขจ่ายครึ่งของร้านตัวเอง
-DigitSemi.getDigitSemiAll('/get/digitsemi', authenticate, ["ADMIN"])// ดูเลขจ่ายครึ่งของทุกร้าน
-DigitSemi.addDigitSemi('/add/digitsemi', authenticate, ["ADMIN", "AGENT"])
-DigitSemi.updateDigitSemi('/add/digitsemi', authenticate, ["ADMIN", "AGENT"])
-DigitSemi.deleteDigitSemi('/add/digitsemi', authenticate, ["ADMIN", "AGENT"])
+// DigitSemi.getDigitSemiIdAndStoreId('/get/digitsemi/:id/:store/:start/:end', authenticate, ["ADMIN", "AGENT", "MANAGER", "MEMBER"])
+// DigitSemi.getDigitSemiMe('/get/digitsemi', authenticate, ["ADMIN", "AGENT", "MANAGER", "MEMBER"])// ดูเลขจ่ายครึ่งของร้านตัวเอง
+// DigitSemi.getDigitSemiAll('/get/digitsemi', authenticate, ["ADMIN"])// ดูเลขจ่ายครึ่งของทุกร้าน
+// DigitSemi.addDigitSemi('/add/digitsemi', authenticate, ["ADMIN", "AGENT"])
+// DigitSemi.updateDigitSemi('/add/digitsemi', authenticate, ["ADMIN", "AGENT"])
+// DigitSemi.deleteDigitSemi('/add/digitsemi', authenticate, ["ADMIN", "AGENT"])
 
 DigitClose.getDigitCloseIdAndStoreId('/get/digitclose/:id/:store/:start/:end', authenticate, ["ADMIN", "AGENT", "MANAGER", "MEMBER"])
 DigitClose.getDigitCloseMe('/get/digitclose/me', authenticate, ["ADMIN", "AGENT", "MANAGER", "MEMBER"])

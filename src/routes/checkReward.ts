@@ -74,6 +74,7 @@ export class ApiCheckReward {
                             if (err) return res.status(202).json(err);
                             return res.json(JSON.parse(JSON.stringify(result)))
                         });
+                        
                     } else {
                         return res.sendStatus(authorize)
                     }
@@ -226,7 +227,7 @@ export class ApiCheckReward {
     }
 
 
-    calculateReward = (one_digits: string[], two_digits: string[], three_digits: string[], reward_top: string, reward_bottom_or_toad: string, rt_one_digits: string, rt_two_digits: string, rt_three_digits: string, digits_semi?: IDigitSemiMySQL) => {
+    calculateReward = (one_digits: string[], two_digits: string[], three_digits: string[], reward_top: string, reward_bottom_or_toad: string, rt_one_digits: string, rt_two_digits: string, rt_three_digits: string) => {
         let bill_reward: Reward = {
             id: "",
             status: "REWARD",
@@ -236,20 +237,12 @@ export class ApiCheckReward {
             const ONE = digit.split(":")
             if (reward_top?.match(ONE[0])) {
                 let p = 0
-                if (digits_semi) {
-                    if (JSON.parse(digits_semi.one_digits as string).top.includes(ONE[0])) p = parseInt(JSON.parse(rt_one_digits).top!) / 2 ?? 0
-                } else {
-                    p = parseInt(JSON.parse(rt_one_digits).top!) ?? 0
-                }
+                p = parseInt(JSON.parse(rt_one_digits).top!) ?? 0
                 bill_reward.total_win += parseInt(ONE[1]) * p
             }
             if (reward_bottom_or_toad?.match(ONE[0])) {
                 let p = 0
-                if (digits_semi) {
-                    if (JSON.parse(digits_semi.one_digits as string).bottom.includes(ONE[0])) p = parseInt(JSON.parse(rt_one_digits).bottom!) / 2 ?? 0
-                } else {
-                    p = parseInt(JSON.parse(rt_one_digits).bottom!) ?? 0
-                }
+                p = parseInt(JSON.parse(rt_one_digits).bottom!) ?? 0
                 bill_reward.total_win += parseInt(ONE[2]) * p
             }
         })
@@ -258,20 +251,12 @@ export class ApiCheckReward {
             const TWO = digit.split(":")
             if (reward_top?.substring(1).match(TWO[0])) {
                 let p = 0
-                if (digits_semi) {
-                    if (JSON.parse(digits_semi.two_digits as string).top.includes(TWO[0])) p = parseInt(JSON.parse(rt_two_digits).top!) / 2 ?? 0
-                } else {
-                    p = parseInt(JSON.parse(rt_two_digits).top!) ?? 0
-                }
+                p = parseInt(JSON.parse(rt_two_digits).top!) ?? 0
                 bill_reward.total_win += parseInt(TWO[1]) * p
             }
             if (reward_bottom_or_toad?.match(TWO[0])) {
                 let p = 0
-                if (digits_semi) {
-                    if (JSON.parse(digits_semi.two_digits as string).bottom.includes(TWO[0])) p = parseInt(JSON.parse(rt_two_digits).bottom!) / 2 ?? 0
-                } else {
-                    p = parseInt(JSON.parse(rt_two_digits).bottom!) ?? 0
-                }
+                p = parseInt(JSON.parse(rt_two_digits).bottom!) ?? 0
                 bill_reward.total_win += parseInt(TWO[2]) * p
             }
         })
@@ -282,20 +267,12 @@ export class ApiCheckReward {
             if (reward_top?.match(THREE[0])) {
                 if (THREE[1] != "0") {
                     let p = 0
-                    if (digits_semi) {
-                        if (JSON.parse(digits_semi.three_digits as string).top.includes(THREE[0])) p = parseInt(JSON.parse(rt_three_digits).top!) / 2 ?? 0
-                    } else {
-                        p = parseInt(JSON.parse(rt_three_digits).top!) ?? 0
-                    }
+                    p = parseInt(JSON.parse(rt_three_digits).top!) ?? 0
                     bill_reward.total_win += parseInt(THREE[1]) * p
                 }
                 if (THREE[2] != "0") {
                     let p = 0
-                    if (digits_semi) {
-                        if (JSON.parse(digits_semi.three_digits as string).toad.includes(THREE[0])) p = parseInt(JSON.parse(rt_three_digits).toad!) / 2 ?? 0
-                    } else {
-                        p = parseInt(JSON.parse(rt_three_digits).toad!) ?? 0
-                    }
+                    p = parseInt(JSON.parse(rt_three_digits).toad!) ?? 0
                     bill_reward.total_win += parseInt(THREE[2]) * p
                 }
             } else {
@@ -379,8 +356,8 @@ export class ApiCheckReward {
                         ]
                         const [checkLotto] = await Helpers.select_database_where("check_rewards", "lotto_id, check_reward_id", where) as ICheckRewardMySQL[]
 
-                        const attr_semi = "digit_semi_id, times, one_digits, two_digits, three_digits, lotto_id AS l_id, percent"
-                        const [digitSemi] = await Helpers.select_database_where("digits_semi", attr_semi, [["times", ">=", date_start], ["times", "<=", date_end], ["lotto_id", "=", data.l_id]]) as IDigitSemiMySQL[]
+                        // const attr_semi = "digit_semi_id, times, one_digits, two_digits, three_digits, lotto_id AS l_id, percent"
+                        // const [digitSemi] = await Helpers.select_database_where("digits_semi", attr_semi, [["times", ">=", date_start], ["times", "<=", date_end], ["lotto_id", "=", data.l_id]]) as IDigitSemiMySQL[]
 
                         if (checkLotto) {
                             const attr = [
@@ -433,7 +410,7 @@ export class ApiCheckReward {
                                                 rt_two_digits = bill.rt_two_digits
                                                 rt_three_digits = bill.rt_three_digits
                                             }
-                                            const price = this.calculateReward(JSON.parse(bill.b_one_digits!), JSON.parse(bill.b_two_digits!), JSON.parse(bill.b_three_digits!), data.top, data.bottom, rt_one_digits.toString(), rt_two_digits.toString(), rt_three_digits.toString(), digitSemi)
+                                            const price = this.calculateReward(JSON.parse(bill.b_one_digits!), JSON.parse(bill.b_two_digits!), JSON.parse(bill.b_three_digits!), data.top, data.bottom, rt_one_digits.toString(), rt_two_digits.toString(), rt_three_digits.toString())
                                             const attr = [["win", "=", price.total_win]]
                                             const where = [
                                                 ["status", "!=", "CANCEL"],
@@ -443,6 +420,7 @@ export class ApiCheckReward {
                                         })
 
                                     });
+                                    
 
                                     const attr = [["status", "=", "REWARD"]]
                                     const where = [
@@ -504,7 +482,7 @@ export class ApiCheckReward {
                                                 rt_three_digits = bill.rt_three_digits
                                             }
                                             
-                                            const price = this.calculateReward(JSON.parse(bill.b_one_digits!), JSON.parse(bill.b_two_digits!), JSON.parse(bill.b_three_digits!), data.top, data.bottom, rt_one_digits.toString(), rt_two_digits.toString(), rt_three_digits.toString(), digitSemi)
+                                            const price = this.calculateReward(JSON.parse(bill.b_one_digits!), JSON.parse(bill.b_two_digits!), JSON.parse(bill.b_three_digits!), data.top, data.bottom, rt_one_digits.toString(), rt_two_digits.toString(), rt_three_digits.toString())
                                             const attr = [["win", "=", price.total_win]]
                                             const where = [
                                                 ["status", "!=", "CANCEL"],
@@ -515,7 +493,7 @@ export class ApiCheckReward {
 
                                     });
 
-
+                                    
 
                                     const attr = [["status", "=", "REWARD"]]
                                     const where = [

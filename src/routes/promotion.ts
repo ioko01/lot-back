@@ -80,6 +80,7 @@ export class ApiPromotion {
                             if (err) return res.status(202).json(err);
                             return res.json(JSON.parse(JSON.stringify(result)))
                         });
+                        
                         // const rates = await Helpers.select_database_left_join_where(["rates_template"], attr, join, where)
                         // if (!rates) return res.status(202).json({ message: "don't have rate" })
                         // return res.json(rates)
@@ -139,6 +140,7 @@ export class ApiPromotion {
                             if (err) return res.status(202).json(err);
                             return res.json(JSON.parse(JSON.stringify(result)))
                         });
+                        
                         // const rates = await Helpers.select_database_left_join_where(["rates_template"], attr, join, where)
                         // if (!rates) return res.status(202).json({ message: "don't have rate" })
                         // return res.json(rates)

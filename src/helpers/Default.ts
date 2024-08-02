@@ -22,6 +22,7 @@ export class HelperController {
                 if (err) return reject(err);
                 resolve(Object.values(JSON.parse(JSON.stringify(result))));
             });
+            
         });
     }
 
@@ -37,6 +38,7 @@ export class HelperController {
                 if (err) return reject(err);
                 resolve(Object.values(JSON.parse(JSON.stringify(result))));
             });
+            
         });
     }
 
@@ -69,6 +71,7 @@ export class HelperController {
                 if (err) return reject(err);
                 resolve(Object.values(JSON.parse(JSON.stringify(result))));
             });
+            
         });
     }
 
@@ -95,6 +98,7 @@ export class HelperController {
                 if (err) return reject(err);
                 resolve(Object.values(JSON.parse(JSON.stringify(result))));
             });
+            
         });
     }
 
@@ -121,6 +125,7 @@ export class HelperController {
                 if (err) return reject(err);
                 resolve(Object.values(JSON.parse(JSON.stringify(result))));
             });
+            
         });
     }
 
@@ -136,6 +141,7 @@ export class HelperController {
                 if (err) return reject(err);
                 resolve(Object.values(JSON.parse(JSON.stringify(result))));
             });
+            
         });
     }
 
@@ -161,6 +167,7 @@ export class HelperController {
                 if (err) return reject(err);
                 resolve(Object.values(JSON.parse(JSON.stringify(result))));
             });
+            
         });
     }
 
@@ -180,6 +187,7 @@ export class HelperController {
                 if (err) return reject(err);
                 resolve(Object.values(JSON.parse(JSON.stringify(result))));
             });
+            
         });
     }
 
@@ -203,6 +211,7 @@ export class HelperController {
                 if (err) return reject(err);
                 resolve(Object.values(JSON.parse(JSON.stringify(result))));
             });
+            
         });
     }
 
@@ -231,6 +240,7 @@ export class HelperController {
                 if (err) return reject(err);
                 resolve(Object.values(JSON.parse(JSON.stringify(result))));
             });
+            
         });
     }
 
@@ -254,90 +264,7 @@ export class HelperController {
                 if (err) return reject(err);
                 resolve(Object.values(JSON.parse(JSON.stringify(result))));
             });
+            
         });
     }
-
-    // getId = async (doc: DocumentReference) => {
-    //     const id = await getDoc(doc)
-    //     if (id.exists()) {
-    //         return { ...id.data(), id: id.id } as IBillDoc | IStoreDoc | IUserDoc | ILottoDoc | IRateDoc | IDigitSemiDoc | IDigitCloseDoc | ICheckRewardDoc | ICommissionDoc
-    //     }
-    // }
-
-    // getContain = async (q: Query) => {
-    //     const { docs } = await getDocs(q)
-    //     return docs.map((doc) => {
-    //         return { ...doc.data(), id: doc.id } as IBillDoc | IStoreDoc | IUserDoc | ILottoDoc | IRateDoc | IDigitSemiDoc | IDigitCloseDoc | ICheckRewardDoc | ICommissionDoc
-    //     })
-    // }
-
-
-    // getAll = async (reference: CollectionReference) => {
-    //     const { docs } = await getDocs(reference)
-    //     return docs.map((doc) => {
-    //         return { ...doc.data(), id: doc.id } as IBillDoc | IBillDocWithId | IStoreDoc | IStoreDocWithId | IUserDoc | IUserDocWithId | ILottoDoc | ILottoDocWithId | IRateDoc | IRateDocWithId | IDigitSemiDoc | IDigitSemiDocWithId | IDigitCloseDoc | IDigitCloseDocWithId | ICheckRewardDoc | ICheckRewardDocWithId | ICommissionDoc | ICommissionDocWithId
-    //     })
-    // }
-
-    // getAllWithOrderBy = async (reference: CollectionReference, nameSort: string, sortBy: OrderByDirection = "asc") => {
-    //     const { docs } = await getDocs(query(reference, orderBy(nameSort, sortBy)))
-    //     return docs.map((doc) => {
-    //         return { ...doc.data(), id: doc.id } as IBillDoc | IStoreDoc | IUserDoc | ILottoDoc | IRateDoc | IDigitSemiDoc | IDigitCloseDoc | ICheckRewardDoc | ICommissionDoc
-    //     })
-    // }
-
-    // add = async (reference: CollectionReference, data: IBillWithId | IStoreWithId | IUserWithId | ILottoWithId | IRateWithId | IDigitSemiWithId | IDigitCloseWithId | ICheckRewardWithId | ICommissionWithId) => {
-    //     return await addDoc(reference, data)
-    // }
-
-    // update = async (id: string, dbname: string, data: UpdateData<IBillWithId | IStoreWithId | IUserWithId | ILottoWithId | IRateWithId | IDigitSemiWithId | IDigitCloseWithId | ICheckRewardWithId | ICommissionWithId>) => {
-    //     const isDoc = doc(db, dbname, id)
-    //     return await updateDoc(isDoc, data)
-    // }
-
-    // delete = async (id: string, dbname: string) => {
-    //     const data = await this.getId(doc(db, dbname, id)) as IBillDoc | IStoreDoc | IUserDoc | ILottoDoc | IRateDoc | IDigitSemiDoc | IDigitCloseDoc | ICheckRewardDoc | ICommissionDoc
-    //     if (!data) return 400
-
-    //     const isDoc = doc(db, dbname, id)
-    //     return await deleteDoc(isDoc)
-    // }
-
-    // create = async (reference: CollectionReference, data: IBillWithId | IStoreWithId | IUserWithId | ILottoWithId | IRateWithId | IDigitSemiWithId | IDigitCloseWithId | ICheckRewardWithId | ICommissionWithId) => {
-    //     return await addDoc(reference, data)
-    // }
-
-    // createAdmin = async (reference: CollectionReference, q: Query, data: IUser) => {
-    //     const { docs } = await getDocs(q)
-
-    //     if (docs.length === 0) {
-    //         const { credit, fullname, password, role, status, username } = data
-
-    //         const hashedPassword = await hash(
-    //             password!,
-    //             10
-    //         );
-
-    //         const userObj: IUser = {
-    //             username,
-    //             password: hashedPassword,
-    //             fullname,
-    //             role,
-    //             status,
-    //             credit,
-    //             created_at: GMT(),
-    //             updated_at: GMT()
-    //         }
-    //         await addDoc(reference, userObj)
-    //             .then(() => {
-    //                 return true;
-    //             })
-    //             .catch(() => {
-    //                 return false
-    //             })
-
-    //     } else {
-    //         return false;
-    //     }
-    // }
 }

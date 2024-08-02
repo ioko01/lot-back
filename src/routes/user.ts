@@ -214,6 +214,7 @@ export class ApiUser {
                             if (err) return res.status(202).json(err);
                             return res.json(JSON.parse(JSON.stringify(result)))
                         });
+                        
                     } else {
                         return res.sendStatus(authorize)
                     }
